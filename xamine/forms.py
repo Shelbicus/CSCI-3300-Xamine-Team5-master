@@ -115,7 +115,7 @@ class NewOrderForm(forms.ModelForm):
             'notes': forms.Textarea(attrs={'class': 'form-control', 'autocomplete': 'off', 'rows': '3'}),
         }
 
-#add email intry/flat rate cost values 
+#add email intry/flat rate cost values the updated way
 
 class PriceCaculator():
     modalList = {"CT Scan": "200", "X-Ray": "300", "MRI": "400"}

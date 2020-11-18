@@ -145,10 +145,10 @@ def order(request, order_id):
     # Attempt to grab order via order_id from url. 404 if not found.
     try:
         cur_order = Order.objects.get(pk=order_id)
-        print(cur_order.get_patient_id())
+        pat_id = cur_order.get_patient_id()
         print(cur_order.modality)
-        pat = Patient.objects.get(pk=cur_order.get_patient_id())
-        print(pat)
+        pat = Patient.objects.get(pk=pat_id)
+        print(pat.pat_email)
     except Order.DoesNotExist:
         raise Http404
 
@@ -168,21 +168,14 @@ def order(request, order_id):
                 calc = PriceCaculator(modal, time)
                 price = calc.calcPrice()
 
-                
+                #send email that shows current account balance 
                 send_mail(
                 subject = 'Account Balance',
-                message = 'You owe' + ' '+ '$' + str(price), 
+                message = 'Thank you for your visit! Your account balance is currently:' + ' '+ '$' + str(price) , 
                 from_email = 'thetesttester3@gmail.com',
                 recipient_list = ["theshelby3@gmail.com"],
                 fail_silently= False
                 )
-                
-
-
-
-
-
-
                 form.save()
             else:
                 # Show errors
@@ -513,48 +506,3 @@ def show_message(request, headlines):
     """ Handles showing error messages """
     return render(request, 'message.html', headlines)
 
-#charge capture system sjb
-"""
-@login_required
-class ChargeView(FormView):
-    template_name = 'order.html'
-    form_class = ChargeForm
-    success_url ='/thanks/'
-
-def home_view(request):
-    if request.method =='POST':
-        cc_form=ChargeForm(request.POST)
-        if form.is_valid():
-            print('valid request')
-            return HttpResponseRedirect('/thanks/')
-        else:
-            print('ass much')
-            cc_form=ChargeForm()
-        return render(request, 'order.html', {'cc_form':cc_form})
-    #context={}
-    #context['cc_form']= ChargeForm
-    #print(context)
-    #return render(request,"order.html", context)
-
-from django.core.mail import send_mail
-from django.conf import settings
-
-def thanks_view(request):
-    context={}
-    if request.method == "POST":
-        resp_form = ChargeForm(request.POST)
-        if resp_form.is_valid():
-            print(resp_form)
-            print(resp_form.cleaned_data)
-            patient_email = (resp_form.cleaned_data["patient_email"])
-            cost = (resp_form.calcPrice())
-            send_mail(
-                subject = 'Account Balance',
-                message = 'Your account balance is' + ' '+ '$' + str(cost), 
-                from_email = 'thetesttester3@gmail.com',
-                recipient_list = [patient_email],
-                fail_silently= False
-            )
-            #send_mail(subject, message, from_email, recipient_list)
-    return render(request,"thanks.html", context)
-"""

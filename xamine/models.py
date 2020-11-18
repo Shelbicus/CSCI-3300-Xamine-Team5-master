@@ -52,7 +52,10 @@ class Patient(models.Model):
     notes = models.TextField(null=True, blank=True, max_length=1000)
 
     doctor = models.ForeignKey(User, on_delete=models.DO_NOTHING, null=True)
-
+    #get patient email for payment function
+    def pat_email(self):
+        if self.email_info:
+            return f"{self.email_info}"
     # Related fields:
     # -- orders = Order query set
 
