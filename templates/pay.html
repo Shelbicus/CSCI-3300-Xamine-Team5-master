@@ -1,0 +1,30 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Coming Soon
+{% endblock %}
+
+{% block header %}
+
+{% endblock %}
+
+{% block main %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col">
+            <div class="jumbotron">
+                <h1 class="display-4">Charge Capture Payment System</h1>
+                <p class="lead">
+                    <form action="/thanks/" method="POST">
+                        {% csrf_token %}
+                        {{ form.as_ul }}
+                        <input type="submit" value="Submit">
+                    </form>
+                </p>
+                <hr class="my-4">
+                <p>{{ message }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
